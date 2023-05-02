@@ -1,0 +1,46 @@
+hostname R5
+conf t
+
+int g0/0
+description R5_to_SPOKE1
+ip address 220.2.51.1 255.255.255.252
+ipv6 address 2001:abe:2:51::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/1
+description R5_to_R12
+ip address 10.220.2.1 255.255.255.252
+ipv6 address 2001:abe:220:21::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/2
+description R5_to_R3
+ip address 220.23.53.1 255.255.255.252
+ipv6 address 2001:abe:23:53::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+ip route 10.220.2.4 255.255.255.252 g0/1 
+ip route 10.220.2.8 255.255.255.252 g0/1
+
+
+router bgp 2
+bgp router-id 10.5.5.5
+neighbor 10.220.2.2 remote-as 2
+neighbor 220.23.53.2 remote-as 3
+neighbor 10.220.2.6 remote-as 2
+neighbor 10.220.2.10 remote-as 2
+
+address-family ipv4 unicast
+neighbor 10.220.2.2 activate
+neighbor 220.23.53.2 activate
+neighbor 10.220.2.6 activate
+neighbor 10.220.2.10 activate
+network 10.220.2.0  mask 255.255.255.252
+network 220.23.53.0 mask 255.255.255.252
+network 220.2.51.0 mask 255.255.255.252
+exit
+
+do wr
