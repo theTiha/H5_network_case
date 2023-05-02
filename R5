@@ -13,6 +13,8 @@ description R5_to_R12
 ip address 10.220.2.1 255.255.255.252
 ipv6 address 2001:abe:220:21::1/64
 ipv6 address fe80::1 link-local
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
 no shut
 
 int g0/2
@@ -22,19 +24,35 @@ ipv6 address 2001:abe:23:53::1/64
 ipv6 address fe80::1 link-local
 no shut
 
+int lo0
+ip address 10.221.2.5 255.255.255.240
+ipv6 address 2001:abe:221::5/64
+no shut
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+router ospfv3 1
+address-family ipv4 unicast
+router-id 10.5.5.5
+
+address-family ipv6 unicast
+router-id 10.5.5.5
+
 router bgp 2
 bgp router-id 10.5.5.5
-neighbor 10.220.2.2 remote-as 2
 neighbor 220.23.53.2 remote-as 3
-neighbor 10.220.2.6 remote-as 2
-neighbor 10.220.2.10 remote-as 2
+neighbor  10.221.2.12 remote-as 2
+neighbor  10.221.2.11 remote-as 2
+neighbor  10.221.2.2 remote-as 2
 
 address-family ipv4 unicast
-neighbor 10.220.2.2 activate
 neighbor 220.23.53.2 activate
-neighbor 10.220.2.6 activate
-neighbor 10.220.2.10 activate
-network 10.220.2.0  mask 255.255.255.252
+neighbor  10.221.2.12 activate
+neighbor  10.221.2.11 activate
+neighbor  10.221.2.2 activate
+neighbor  10.221.2.12 update-source lo0
+neighbor  10.221.2.11 update-source lo0
+neighbor  10.221.2.2 update-source lo0
 network 220.23.53.0 mask 255.255.255.252
 network 220.2.51.0 mask 255.255.255.252
 exit
