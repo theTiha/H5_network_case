@@ -1,0 +1,37 @@
+hostname R2
+conf t
+
+int g0/0
+description R2_to_R11
+ip address 10.220.2.10 255.255.255.252
+ipv6 address 2001:abe:220:23::10/64
+ipv6 address fe80::10 link-local
+no shut
+
+int g0/1
+description R2_to_R1-HUB
+ip address 220.2.12.1 255.255.255.252
+ipv6 address 2001:abe:2:12::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+ip route 10.220.2.0  255.255.255.252 g0/0
+ip route 10.220.2.4  255.255.255.252 g0/0
+
+router bgp 2
+bgp router-id 10.2.2.2
+neighbor 10.220.2.9 remote-as 2
+neighbor 220.2.12.2 remote-as 1
+neighbor 10.220.2.6 remote-as 2
+neighbor 10.220.2.10 remote-as 2
+
+address-family ipv4 unicast
+network 10.220.2.8 mask 255.255.255.252
+network 220.2.12.0 mask 255.255.255.252
+neighbor 10.220.2.9 activate
+neighbor 220.2.12.2 activate
+neighbor 10.220.2.6 activate
+neighbor 10.220.2.10 active
+
+do wr
+
