@@ -33,8 +33,9 @@ int g0/2
 ospfv3 1 ipv4 area 0
 ospfv3 1 ipv6 area 0
 
-route-map NO-EXPORT
-set community no-export
+#route-map NO-EXPORT
+#set community no-export
+ip as-path access-list 1 permit ^$
 
 router bgp 1
 bgp router-id 4.4.4.4
@@ -48,8 +49,9 @@ network 172.16.14.0 mask 255.255.255.252
 network 220.3.34.0 mask 255.255.255.252
 neighbor 172.16.14.2 activate
 neighbor 220.3.34.01 activate
-neighbor 220.3.34.1 route-map NO-EXPORT in
-neighbor 220.3.34.1 route-map NO-EXPORT out
+#neighbor 220.3.34.1 route-map NO-EXPORT in
+#neighbor 220.3.34.1 route-map NO-EXPORT out
+neighbor 220.3.34.1 filter-list 1 out
 
 address-family ipv6 unicast
 Neighbor 2001:abe1:14::2  activate
