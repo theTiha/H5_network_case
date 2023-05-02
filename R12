@@ -17,16 +17,39 @@ no shut
 exit 
 do wr
 
+router ospfv3 1
+address-family ipv4 unicast
+router-id 12.12.12.12
+
+address-family ipv6 unicast
+router-id 12.12.12.12
+
+int g0/1
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int g0/0
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int lo0
+ip address 10.221.2.12 255.255.255.240 
+ipv6 address 2001:abe:221::12/64
+no shut
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
 router bgp 2
 bgp router-id 10.12.12.12
-neighbor 10.220.2.1 remote-as 2
-neighbor 10.220.2.6 remote-as 2
-neighbor 10.220.2.10 remote-as 2
+neighbor  10.221.2.5 remote-as 2
+neighbor  10.221.2.11 remote-as 2
+neighbor  10.221.2.2 remote-as 2
+
 
 address-family ipv4 unicast
-network 10.220.2.0 mask 255.255.255.252
-network 10.220.2.4 mask 255.255.255.252
-neighbor 10.220.2.1 activate
-neighbor 10.220.2.6 activate
-neighbor 10.220.2.10 active
-
+neighbor  10.221.2.5 activate
+neighbor  10.221.2.11 activate
+neighbor  10.221.2.2 activate
+neighbor  10.221.2.5 update-source lo0
+neighbor  10.221.2.11 update-source lo0
+neighbor  10.221.2.2 update-source lo0
