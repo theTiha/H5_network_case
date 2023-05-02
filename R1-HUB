@@ -35,6 +35,9 @@ af-interface g0/1
 no shut
 exit
 
+route-map NO-EXPORT
+set community no-export
+
 router bgp 1
 bgp router-id 11.11.11.11
 neighbor 172.16.14.1 remote-as 1
@@ -48,6 +51,8 @@ network 172.16.14.0 mask 255.255.255.252
 network 220.2.12.0 mask 255.255.255.252
 neighbor 172.16.14.1 activate
 neighbor 220.2.12.1 activate
+neighbor 220.2.12.1 route-map NO-EXPORT out
+neighbor 220.2.12.1 route-map NO-EXPORT in
 exit
 
 address-family ipv6 unicast
