@@ -1,0 +1,50 @@
+hostname R4
+
+int g0/0
+Description R4_to_R3
+ip address 220.3.34.2 255.255.255.252
+ipv6 address 2001:abe:3:34::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int g0/1
+Description R4_to_R1-HUB
+ip address 172.16.14.1 255.255.255.252
+ipv6 address 2001:abe1:14::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/2
+Description R4_to_Sw2
+ip address 172.16.42.1 255.255.255.252
+ipv6 address 2001:abe1:42::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+router ospfv3 1
+router-id 4.4.4.4
+address-family ipv4 unicast
+exit
+
+address-family ipv6 unicast
+exit
+
+int g0/2
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+router bgp 1
+bgp router-id 4.4.4.4
+neighbor 172.16.14.2 remote-as 1
+neighbor 220.3.34.1 remote-as 3
+
+address-family ipv4 unicast
+network 172.16.14.0 mask 255.255.255.252
+network 220.3.34.0 mask 255.255.255.252
+neighbor 172.16.14.2 activate
+neighbor 220.3.34.01 activate
+
+
+
+do wr
+
