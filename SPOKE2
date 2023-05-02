@@ -1,0 +1,29 @@
+hostname SPOKE2
+
+int g0/1
+Description R8_to_R10
+ip address 172.16.108.2 255.255.255.252
+ipv6 address 2001:abe1:108::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int g0/0
+Description R8_to_R6
+ip address 172.16.68.2 255.255.255.252
+ipv6 address 2001:abe1:68::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 3.1.1.1
+network 172.16.132.0 0.0.0.3
+
+address-family ipv6 unicast autonomous-system 10
+eigrp router-id 3.1.1.1
+af-interface default
+shut
+af-interface g0/0
+no shut
+
+do wr
