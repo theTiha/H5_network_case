@@ -1,0 +1,53 @@
+hostname R10
+
+int g0/0
+ip address 172.16.108.1 255.255.255.252
+ipv6 address 2001:abe1:108::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int lo 0
+ip address 192.168.101.1 255.255.255.0
+ipv6 address 2001:abe2:101::1/64
+ipv6 address fe80::101 link-local
+no shut
+
+int lo 1
+ip address 192.168.102.1 255.255.255.0
+ipv6 address 2001:abe2:102::1/64
+ipv6 address fe80::102 link-local
+no shut
+
+int lo 2
+ip address 192.168.103.1 255.255.255.0
+ipv6 address 2001:abe2:103::1/64
+ipv6 address fe80::103 link-local
+no shut
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 10.10.10.10
+network 172.16.108.0 0.0.0.3
+network 192.168.101.0 0.0.0.255 
+network 192.168.102.0 0.0.0.255 
+network 192.168.103.0 0.0.0.255 
+eigrp stub connected
+
+address-family ipv6 unicast autonomous-system 10
+eigrp router-id 10.10.10.10
+eigrp stub connected
+
+af-interface lo0
+passive-interface
+exit
+
+af-interface lo1
+passive-interface
+exit
+
+af-interface lo2
+passive-interface
+exit
+
+
+do wr
