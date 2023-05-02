@@ -14,18 +14,43 @@ ipv6 address 2001:abe:220:23::9/64
 ipv6 address fe80::9 link-local
 no shut
 exit
-do wr
+
+router ospfv3 1
+address-family ipv4 unicast
+router-id 11.11.11.11
+
+address-family ipv6 unicast
+router-id 11.11.11.11
+
+int g0/1
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int g0/0
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int lo0
+ip address 10.221.2.11 255.255.255.240 
+ipv6 address 2001:abe:221::11/64
+no shut
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
 
 router bgp 2
 bgp router-id 10.11.11.11
-neighbor 10.220.2.1 remote-as 2
-neighbor 10.220.2.10 remote-as 2
-neighbor 10.220.2.5 remote-as 2
+neighbor  10.221.2.5 remote-as 2
+neighbor  10.221.2.12 remote-as 2
+neighbor  10.221.2.2 remote-as 2
 
 
 address-family ipv4 unicast
-network 10.220.2.8 mask 255.255.255.252
-network 10.220.2.4 mask 255.255.255.252
-neighbor 10.220.2.1 activate
-neighbor 10.220.2.10 active
-neighbor 10.220.2.5 active
+neighbor  10.221.2.5 activate
+neighbor  10.221.2.12 activate
+neighbor  10.221.2.2 activate
+neighbor  10.221.2.5 update-source lo0
+neighbor  10.221.2.12 update-source lo0
+neighbor  10.221.2.2 update-source lo0
+
+
+do wr
