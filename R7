@@ -1,0 +1,61 @@
+Hostname R7
+
+int g0/0
+Description R7_to_R6
+ip address 172.16.67.2 255.255.255.252
+ipv6 address 2001:abe1:67::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int lo 0
+ip address 192.168.71.1 255.255.255.0
+ipv6 address 2001:abe2:71::1/64
+ipv6 address fe80::71 link-local
+no shut
+
+int lo 1
+ip address 192.168.72.1 255.255.255.0
+ipv6 address 2001:abe2:72::1/64
+ipv6 address fe80::72 link-local
+no shut
+
+int lo 2
+ip address 192.168.73.3 255.255.255.0
+ipv6 address 2001:abe2:73::1/64
+ipv6 address fe80::73 link-local
+no shut
+
+router ospfv3 1
+router-id 7.7.7.7
+
+address-family ipv4 unicast
+passive-interface default
+no passive-interface g0/0
+area 1 stub no-summary
+exit
+
+address-family ipv6 unicast
+passive-interface default
+no passive-interface g0/0
+area 1 stub no-summary
+exit
+
+int g0/0
+ospfv3 1 ipv4 area 1
+ospfv3 1 ipv6 area 1
+
+int lo 0
+ospfv3 1 ipv4 area 1
+ospfv3 1 ipv6 area 1
+
+
+int lo 1
+ospfv3 1 ipv4 area 1
+ospfv3 1 ipv6 area 1
+
+int lo 2
+ospfv3 1 ipv4 area 1
+ospfv3 1 ipv6 area 1
+
+
+do wr
