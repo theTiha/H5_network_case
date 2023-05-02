@@ -30,3 +30,4 @@ neighbor 10.220.2.1 activate
 neighbor 10.220.2.6 activate
 neighbor 10.220.2.10 active
 
+do wr
