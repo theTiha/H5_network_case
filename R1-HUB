@@ -48,5 +48,5 @@ neighbor 220.2.12.1 activate
 exit
 
 
-
+do wr
 do wr
