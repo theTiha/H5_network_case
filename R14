@@ -1,0 +1,48 @@
+hostname R14
+
+conf t
+int loopback 0
+ip address 192.168.11.1 255.255.255.0
+ipv6 address 2001:abe2:11::1/64
+ipv6 address fe80::11 link-local
+no shut
+
+int loopback 1
+ip address 192.168.12.1 255.255.255.0
+ipv6 address 2001:abe2:12::1/64
+ipv6 address fe80::12 link-local
+no shut
+
+int loopback 2
+ip address 192.168.13.1 255.255.255.0
+ipv6 address 2001:abe2:13::1/64
+ipv6 address fe80::13 link-local
+no shut
+
+int g0/0
+description R14_to_SPOKE1
+ip address 172.16.141.1 255.255.255.252
+ipv6 address 2001:abe1:141::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 2.14.14.14
+network 172.16.141.0 0.0.0.3
+network 192.168.11.0 0.0.0.255
+network 192.168.12.0 0.0.0.255
+network 192.168.13.0 0.0.0.255
+
+address-family ipv6 unicast autonomous-system 10
+eigrp router-id 2.14.14.14
+af-interface default
+shut
+af-interface g0/0
+no shut
+af-interface lo0 
+no shut
+af-interface lo1 
+no shut
+af-interface lo2
+no shut
