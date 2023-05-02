@@ -30,6 +30,7 @@ neighbor 220.3.34.2 remote-as 1
 address-family ipv4 unicast
 network 220.23.53.0 mask 255.255.255.252
 network 220.3.34.0 mask 255.255.255.252
+network 220.3.32.0 mask 255.255.255.252
 neighbor 220.23.53.1 activate
 neighbor 220.3.34.2 activate
 exit
