@@ -1,0 +1,49 @@
+Hostname R8
+
+int g0/1
+ip address 172.16.108.2 255.255.255.252
+ipv6 address 2001:abe1:108::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int g0/0
+ip address 172.16.68.2 255.255.255.252
+ipv6 address 2001:abe1:68::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+router ospfv3 1
+router-id 8.8.8.8
+
+address-family ipv4 unicast
+area 51 nssa
+redistribute eigrp 20  metric-type 1
+
+address-family ipv6 unicast
+area 51 nssa
+redistribute eigrp 20 include-connected metric-type 1
+
+int g0/0
+ospfv3 1 ipv4 area 51
+ospfv3 1 ipv6 area 51
+
+router eigrp EAS20
+address-family ipv4 unicast autonomous-system 20
+eigrp router-id 8.8.8.8
+network 172.16.108.0 0.0.0.3
+topology base
+redistribute ospfv3 1 metric 1000000 100 255 1 1500 
+
+address-family ipv6 unicast autonomous-system 20
+eigrp router-id 8.8.8.8
+af-interface g0/0
+shutdown
+exit
+topology base
+redistribute ospf 1 metric 1000000 100 255 1 1500 include-connected 
+
+
+
+
+
+do wr
