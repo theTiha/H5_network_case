@@ -1,0 +1,75 @@
+hostname R6
+
+int g0/0
+Description R6_to_R9
+ip address 172.16.69.1 255.255.255.252
+ipv6 address 2001:abe1:69::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/1
+Description R6_to_SW2
+ip address 172.16.26.1 255.255.255.252
+ipv6 address 2001:abe1:26::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/2
+Description R6_to_R7
+ip address 172.16.67.1 255.255.255.252
+ipv6 address 2001:abe1:67::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/3
+Description R6_to_R9
+ip address 172.16.68.1 255.255.255.252
+ipv6 address 2001:abe1:68::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+router ospfv3 1
+address-family ipv4 unicast
+router-id 6.6.6.6
+area 1 stub no-summary
+area 51 nssa
+redistribute eirgp 10 metric-type 1
+
+address-family ipv6 unicast
+router-id 6.6.6.6
+area 1 stub no-summary
+area 51 nssa
+redistribute eigrp 10 include-connected metric-type 1
+
+int g0/1
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int g0/2
+ospfv3 1 ipv4 area 1
+ospfv3 1 ipv6 area 1
+
+int g0/3
+ospfv3 1 ipv4 area 51
+ospfv3 1 ipv6 area 51
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 6.6.6.6
+network 172.16.69.0 0.0.0.3
+exit
+topology base
+redistribute ospfv3 1 metric 1000000 100 255 1 1500
+
+address-family ipv6 unicast autonomous-system 10
+eigrp router-id 6.6.6.6
+af-interface g0/0
+no shut
+exit
+topology base
+redistribute ospf 1 metric 1000000 100 255 1 1500 include-connected
+af-interface default
+shut
+
+
+do wr
