@@ -42,6 +42,9 @@ bgp router-id 10.11.11.11
 neighbor  10.221.2.5 remote-as 2
 neighbor  10.221.2.12 remote-as 2
 neighbor  10.221.2.2 remote-as 2
+neighbor 2001:abe:221::2 remote-as 2
+neighbor 2001:abe:221::12 remote-as 2
+neighbor 2001:abe:221::5 remote-as 2
 
 
 address-family ipv4 unicast
@@ -52,5 +55,12 @@ neighbor  10.221.2.5 update-source lo0
 neighbor  10.221.2.12 update-source lo0
 neighbor  10.221.2.2 update-source lo0
 
+address-family ipv6 unicast
+neighbor 2001:abe:221::2 activate
+neighbor 2001:abe:221::12 activate
+neighbor 2001:abe:221::5 activate
+neighbor 2001:abe:221::2 update-source lo0
+neighbor 2001:abe:221::12 update-source lo0
+neighbor 2001:abe:221::5 update-source lo0
 
 do wr
