@@ -1,0 +1,64 @@
+Hostname R9
+
+int g0/0
+Description R9_to_R6
+ip address 172.16.69.2 255.255.255.252
+ipv6 address 2001:abe1:69::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int g0/1
+Description R9_to_SW1
+ip address 172.16.19.2 255.255.255.252
+ipv6 address 2001:abe1:19::2/64
+ipv6 address fe80::2 link-local
+no shut
+
+int lo 0
+ip address 192.168.91.1 255.255.255.0
+ipv6 address 2001:abe2:91::1/64
+ipv6 address fe80::91 link-local
+no shut
+
+int lo 1
+ip address 192.168.92.1 255.255.255.0
+ipv6 address 2001:abe2:92::1/64
+ipv6 address fe80::92 link-local
+no shut
+
+int lo 2
+ip address 192.168.93.1 255.255.255.0
+ipv6 address 2001:abe2:93::1/64
+ipv6 address fe80::93 link-local
+no shut
+do wr
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 9.9.9.9
+network 172.16.69.0 0.0.0.3
+network 172.16.19.0 0.0.0.3
+network 192.168.91.0 0.0.0.255 
+network 192.168.92.0 0.0.0.255 
+network 192.168.93.0 0.0.0.255 
+exit
+
+address-family ipv6 unicast autonomous-system 10
+eigrp router-id 9.9.9.9
+af-interface default
+shut
+af-interface g0/0
+no shut
+af-interface g0/1
+no shut
+af-interface lo 0
+no shut
+af-interface lo 1
+no shut
+af-interface lo 2
+no shut
+exit
+
+
+
+do wr
