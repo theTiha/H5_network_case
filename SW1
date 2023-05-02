@@ -1,0 +1,50 @@
+hostname SW1
+
+int g0/0
+no swi
+Description SW1_to_R1-HUB
+ip address 172.16.11.1 255.255.255.252
+ipv6 address 2001:abe1:11::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/1
+no swi
+Description SW1_to_R9
+ip address 172.16.19.1 255.255.255.252
+ipv6 address 2001:abe1:19::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+int g0/2
+no swi
+Description SW1_to_Sw2
+ip address 172.16.12.1 255.255.255.252
+ipv6 address 2001:abe1:12::1/64
+ipv6 address fe80::1 link-local
+no shut
+
+
+router eigrp EAS10
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 1.1.1.1
+network 172.16.19.0 0.0.0.3
+network 172.16.12.0 0.0.0.3
+network 172.16.11.0 0.0.0.3
+exit
+
+
+address-family ipv4 unicast autonomous-system 10
+eigrp router-id 1.1.1.1
+af-interface default
+shut
+af-interface g0/0
+no shut
+af-interface g0/1
+no shut
+af-interface g0/2
+no shut
+exit
+
+
+do wr
