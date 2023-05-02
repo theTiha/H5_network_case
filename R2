@@ -18,20 +18,43 @@ no shut
 ip route 10.220.2.0  255.255.255.252 g0/0
 ip route 10.220.2.4  255.255.255.252 g0/0
 
+router ospfv3 1
+address-family ipv4 unicast
+router-id 2.2.2.2
+
+address-family ipv6 unicast
+router-id 2.2.2.2
+
+
+int g0/0
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
+int lo0
+ip address 10.221.2.2 255.255.255.240 
+ipv6 address 2001:abe:221::2/64
+no shut
+ospfv3 1 ipv4 area 0
+ospfv3 1 ipv6 area 0
+
 router bgp 2
 bgp router-id 10.2.2.2
-neighbor 10.220.2.9 remote-as 2
+neighbor  10.221.2.5 remote-as 2
+neighbor  10.221.2.12 remote-as 2
+neighbor  10.221.2.11 remote-as 2
 neighbor 220.2.12.2 remote-as 1
-neighbor 10.220.2.6 remote-as 2
-neighbor 10.220.2.10 remote-as 2
+
 
 address-family ipv4 unicast
-network 10.220.2.8 mask 255.255.255.252
-network 220.2.12.0 mask 255.255.255.252
-neighbor 10.220.2.9 activate
+neighbor  10.221.2.5 activate
+neighbor  10.221.2.12 activate
+neighbor  10.221.2.11 activate
 neighbor 220.2.12.2 activate
-neighbor 10.220.2.6 activate
-neighbor 10.220.2.10 active
+neighbor  10.221.2.5 update-source lo0
+neighbor  10.221.2.12 update-source lo0
+neighbor  10.221.2.11 update-source lo0
+network 10.220.2.8 mask 255.255.255.252
+
 
 do wr
 
