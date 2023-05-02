@@ -43,7 +43,10 @@ neighbor  10.221.2.5 remote-as 2
 neighbor  10.221.2.12 remote-as 2
 neighbor  10.221.2.11 remote-as 2
 neighbor 220.2.12.2 remote-as 1
-
+Neighbor 2001:abe:221::5 remote-as 2
+Neighbor 2001:abe:221::11 remote-as 2
+Neighbor 2001:abe:221::12 remote-as 2
+neighbor 2001:abe:2:12::2 remote-as 1
 
 address-family ipv4 unicast
 neighbor  10.221.2.5 activate
@@ -54,6 +57,16 @@ neighbor  10.221.2.5 update-source lo0
 neighbor  10.221.2.12 update-source lo0
 neighbor  10.221.2.11 update-source lo0
 network 10.220.2.8 mask 255.255.255.252
+
+address-family ipv6 unicast
+Neighbor 2001:abe:221::5 activate
+Neighbor 2001:abe:221::11 activate
+Neighbor 2001:abe:221::12 activate
+neighbor 2001:abe:2:12::2 activate
+Neighbor 2001:abe:221::5 update-source lo0
+Neighbor 2001:abe:221::11 update-source lo0
+Neighbor 2001:abe:221::12 update-source lo0
+network 2001:abe:2:12::/64
 
 
 do wr
