@@ -61,8 +61,10 @@ exit
 address-family ipv6 unicast
 Neighbor 2001:abe:2:12::1 activate
 Neighbor 2001:abe1:14::1 activate
-network 2001:abe:2:12::/64
+#network 2001:abe:2:12::/64
 network 2001:abe1:14::/64
+neighbor 2001:abe:2:12::1 filter-list 1 out
+neighbor 2001:abe1:14::1 next-hop-self
 
 do wr
 
