@@ -24,6 +24,7 @@ no shut
 router ospfv3 1
 router-id 4.4.4.4
 address-family ipv4 unicast
+default-information originate
 exit
 
 address-family ipv6 unicast
@@ -37,13 +38,14 @@ ospfv3 1 ipv6 area 0
 #set community no-export
 ip as-path access-list 1 permit ^$
 
-ip route 0.0.0.0 0.0.0.0 g0/0 220.3.34.1
+#ip route 0.0.0.0 0.0.0.0 g0/0 220.3.34.1
 
 ip prefix-list MATCH-DEFAULT seq 10 permit 0.0.0.0/0
 
-route-map NO-EXPORT-DEFAULT permit 10
+
+route-map NO-EXPORT-DEFAULT deny 10
  match ip address prefix-list MATCH-DEFAULT
- set community local-AS additive
+ #set community local-AS additive
 route-map NO-EXPORT-DEFAULT permit 20
 
 router bgp 1
