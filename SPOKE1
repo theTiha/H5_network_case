@@ -30,6 +30,7 @@ interface Tunnel0
  tunnel source GigabitEthernet0/1
  tunnel mode gre multipoint
  tunnel key 100
+ ip nhrp shortcut
 end
 
 router eigrp EAS10
