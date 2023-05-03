@@ -59,6 +59,7 @@ neighbor  10.221.2.11 update-source lo0
 neighbor  10.221.2.2 update-source lo0
 network 220.23.53.0 mask 255.255.255.252
 network 220.2.51.0 mask 255.255.255.252
+aggregate-address 10.220.2.0 255.255.255.240 sum
 exit
 
 address-family ipv6 unicast
