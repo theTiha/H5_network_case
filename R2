@@ -56,7 +56,7 @@ neighbor 220.2.12.2 activate
 neighbor  10.221.2.5 update-source lo0
 neighbor  10.221.2.12 update-source lo0
 neighbor  10.221.2.11 update-source lo0
-network 10.220.2.8 mask 255.255.255.252
+network 220.2.12.0 mask 255.255.255.252
 aggregate-address 10.220.2.0 255.255.255.240 sum
 
 address-family ipv6 unicast
