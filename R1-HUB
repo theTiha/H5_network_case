@@ -21,6 +21,19 @@ ipv6 address 2001:abe:2:12::2/64
 ipv6 address fe80::2 link-local
 no shut
 
+interface Tunnel0
+ ip address 172.16.201.1 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp authentication BOB
+ ip nhrp network-id 1
+ ip nhrp redirect
+ ip tcp adjust-mss 1360
+ tunnel source GigabitEthernet0/2
+ tunnel mode gre multipoint
+ tunnel key 100
+end
+
 #ip route 0.0.0.0 0.0.0.0 g0/2 220.2.12.1 201
 
 router eigrp EAS10
