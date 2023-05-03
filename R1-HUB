@@ -21,6 +21,7 @@ ipv6 address 2001:abe:2:12::2/64
 ipv6 address fe80::2 link-local
 no shut
 
+
 interface Tunnel0
  ip address 172.16.201.1 255.255.255.0
  no ip redirects
@@ -85,6 +86,28 @@ Neighbor 2001:abe1:14::1 activate
 network 2001:abe1:14::/64
 neighbor 2001:abe:2:12::1 filter-list 1 out
 neighbor 2001:abe1:14::1 next-hop-self
+
+crypto isakmp policy 99
+ hash sha384
+ encryption aes 256
+ group 14
+ authentication pre-share
+ exit
+
+crypto isakmp key DMVPN@key# address 0.0.0.0
+
+crypto ipsec transform-set DMVPN_TRANS esp-aes 256 esp-sha384-hmac
+ mode transport
+ exit
+
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set DMVPN_TRANS
+ exit
+
+interface tunnel 0
+ tunnel protection ipsec profile DMVPN_PROFILE
+ exit
+
 
 do wr
 

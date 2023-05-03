@@ -45,3 +45,24 @@ af-interface default
 shut
 af-interface g0/0
 no shut
+
+crypto isakmp policy 99
+ hash sha384
+ encryption aes 256
+ group 14
+ authentication pre-share
+ exit
+
+crypto isakmp key DMVPN@key# address 0.0.0.0
+
+crypto ipsec transform-set DMVPN_TRANS esp-aes 256 esp-sha384-hmac
+ mode transport
+ exit
+
+crypto ipsec profile DMVPN_PROFILE
+ set transform-set DMVPN_TRANS
+ exit
+
+interface tunnel 0
+ tunnel protection ipsec profile DMVPN_PROFILE
+ exit
